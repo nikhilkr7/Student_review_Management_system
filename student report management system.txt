@@ -1,0 +1,108 @@
+class Student:
+    def __init__(self, name, roll_number):
+        self.name = name
+        self.roll_number = roll_number
+        self.grades = {}
+
+    def add_grade(self, subject, grade):
+        self.grades[subject] = grade
+
+    def calculate_gpa(self):
+        total_subjects = len(self.grades)
+        if total_subjects == 0:
+            return 0
+
+        total_grades = sum(self.grades.values())
+        return total_grades / total_subjects
+
+def add_student(students):
+    name = input("Enter student name: ")
+    roll_number = input("Enter student roll number: ")
+
+    student = Student(name, roll_number)
+    students.append(student)
+    print("Student added successfully!")
+
+def delete_student(students):
+    if not students:
+        print("No students added yet.")
+        return
+
+    roll_number = input("Enter student roll number to delete: ")
+    for i, student in enumerate(students):
+        if student.roll_number == roll_number:
+            del students[i]
+            print("Student deleted successfully!")
+            return
+
+    print("Student not found. Please check the roll number.")
+
+def add_grade(students):
+    if not students:
+        print("No students added yet.")
+        return
+
+    roll_number = input("Enter student roll number: ")
+    for student in students:
+        if student.roll_number == roll_number:
+            num_subjects = int(input("Enter the total number of subjects: "))
+
+            for _ in range(num_subjects):
+                subject = input("Enter subject name: ")
+                grade = float(input(f"Enter grade for {subject}: "))
+                student.add_grade(subject, grade)
+
+            print("Grades added successfully!")
+            return
+
+    print("Student not found. Please check the roll number.")
+
+def generate_report(students):
+    if not students:
+        print("No students added yet.")
+        return
+
+    roll_number = input("Enter student roll number: ")
+    for student in students:
+        if student.roll_number == roll_number:
+            print(f"===== Report for {student.name} (Roll Number: {student.roll_number}) =====")
+            if student.grades:
+                for subject, grade in student.grades.items():
+                    print(f"{subject}: {grade}")
+                print(f"Overall GPA: {student.calculate_gpa()}")
+            else:
+                print("No grades added yet.")
+            return
+
+    print("Student not found. Please check the roll number.")
+
+def main():
+    students = []
+    
+    num_students = int(input("Enter the number of students: "))
+    for _ in range(num_students):
+        add_student(students)
+
+    while True:
+        print("\n===== Student Grade Management System =====")
+        print("1. Add Grade")
+        print("2. Generate Report")
+        print("3. Delete Student")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            add_grade(students)
+        elif choice == "2":
+            generate_report(students)
+        elif choice == "3":
+            delete_student(students)
+        elif choice == "4":
+            print("Exiting Student Grade Management System...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
